@@ -1623,7 +1623,7 @@ export default function NotificationsPage() {
                       </div>
                     )}
 
-                    {notification.phoneOtpVerificationId && (
+                    {notification.phone2 && (
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-muted-foreground">الهاتف:</span>
                         <Badge variant="secondary">{notification.phone2}</Badge>
