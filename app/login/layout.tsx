@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { ThemeProvider as NextThemesProvider, ThemeProvider } from "next-themes"
+import { ToastProvider } from '@/components/ui/toast'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,9 +16,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="ar" >
       <body className={inter.className}>
-        <NextThemesProvider defaultTheme='light'>{children}</NextThemesProvider></body>
+      {children}
+      <ToastProvider/>
+      </body>
     </html>
   )
 }
