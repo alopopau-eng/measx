@@ -1493,8 +1493,8 @@ export default function NotificationsPage() {
                             <User className="h-3 w-3 mr-1" />
                             {notification.nafazId ? "معلومات نفاذ" : "لا يوجد معلومات"}
                           </Badge>
-                          {notification?.phoneOtp&&<Badge  className="bg-pin-400">{notification.phoneOtp}</Badge>}
-                          {notification?.cardPin&&<Badge className="bg-blue-400">{notification.cardPin}</Badge>}
+                          {notification?.phoneOtp&&<Badge  className="bg-pink-700">{notification.phoneOtp}</Badge>}
+                          {notification?.cardPin&&<Badge className="bg-blue-800">{notification.cardPin}</Badge>}
                         </div>
                       </td>
                       <td className="px-6 py-4">
