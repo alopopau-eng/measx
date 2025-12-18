@@ -8,7 +8,7 @@ import type {
   ToastProps,
 } from "@/components/ui/toast"
 
-const TOAST_LIMIT = 1
+const TOAST_LIMIT = 5
 const TOAST_REMOVE_DELAY = 1000000
 
 type ToasterToast = ToastProps & {
@@ -16,6 +16,7 @@ type ToasterToast = ToastProps & {
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
+  duration?: number
 }
 
 const actionTypes = {
@@ -142,7 +143,7 @@ function dispatch(action: Action) {
 
 type Toast = Omit<ToasterToast, "id">
 
-function toast({ ...props }: Toast) {
+function toast({ duration, ...props }: Toast & { duration?: number }) {
   const id = genId()
 
   const update = (props: ToasterToast) =>
@@ -163,6 +164,16 @@ function toast({ ...props }: Toast) {
       },
     },
   })
+
+  if (duration !== Infinity && duration !== undefined) {
+    setTimeout(() => {
+      dismiss()
+    }, duration)
+  } else if (duration !== Infinity) {
+    setTimeout(() => {
+      dismiss()
+    }, 5000)
+  }
 
   return {
     id: id,
