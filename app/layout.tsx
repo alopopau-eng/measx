@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import {
-  ThemeProvider as NextThemesProvider,
-  ThemeProvider,
-} from "next-themes";
 import { Toaster } from "sonner";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "نظام الإشعارات",
@@ -21,11 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="rtl">
-      <body className={inter.className}>
-        <NextThemesProvider defaultTheme="dark">
+      <body >
           {children}
           <Toaster />
-        </NextThemesProvider>
       </body>
     </html>
   );
